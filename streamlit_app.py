@@ -7,7 +7,7 @@ import pydeck as pdk
 # 제목
 st.title("🔥 진주시 화재")
 
-tab1, tab2, tab3 = st.tabs(['화재 발생 정보', '비상소화장치', '문제 제시'])
+tab1, tab2, tab3, tab4 = st.tabs(['화재 발생 정보', '비상소화장치', '문제 제시', '문제 해결'])
 with tab1:
     st.header("1. 진주시 화재 발생 정보")
 
@@ -91,3 +91,24 @@ with tab3:
 
     st.write("화재 정보 데이터프레임 (일부 열만 표시됨):")
     st.dataframe(df)
+
+with tab4:
+    st.header("해결 방안")
+    col1, col2 = st.colums(2)
+    with col1:
+        st.markdown("### 🔥화재 예방 방법(화재 발생 자체를 줄이는 방법)")
+        st.info("✅개인의 주의와 습관 개선" \
+        "ex) 조리 중 자리를 비우지 않기" \
+        "ex) 담배 제대로 끄기" \
+        "ex) 쓰레기 소각 금지" \
+        "✅교육과 캠페인" \
+        "ex) 정기적인 소방 교육과 훈련" \
+        "ex) 실제 사례 공유를 통해 경각심 부여")
+    with col2:
+        st.markdown("### 🚨2. 화재 피해 최소화 방법 (화재 발생 시 피해 줄이기)")
+        st.success("✅ **초동 대응 강화**")
+    
+    st.header("💡참고사례")
+    st.write("https://news.bbsi.co.kr/news/articleView.html?idxno=4030108")
+    st.header("🟥결론")
+    st.write("화재는 기술보다 습관으로 막고, 피해는 기술로 줄인다.")
