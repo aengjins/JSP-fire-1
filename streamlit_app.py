@@ -94,7 +94,7 @@ with tab3:
 
 with tab4:
     st.header("해결 방안")
-    col1, col2 = st.colums(2)
+    col1, col2 = st.columns(2)
     with col1:
         st.markdown("### 🔥화재 예방 방법(화재 발생 자체를 줄이는 방법)")
         st.info("✅개인의 주의와 습관 개선" \
