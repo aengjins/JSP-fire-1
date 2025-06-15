@@ -1,6 +1,8 @@
 import streamlit as st
+import pandas as pd
 
-st.title("🎈 My new app")
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
-)
+#제목
+st.title("🔥 진주시 화재")
+st.header("1. 진주시 화재 발생 정보")
+#막대그래프 출력
+st.
