@@ -103,7 +103,7 @@ with tab4:
         "ex) 쓰레기 소각 금지<br>" \
         "✅교육과 캠페인<br>" \
         "ex) 정기적인 소방 교육과 훈련<br>" \
-        "ex) 실제 사례 공유를 통해 경각심 부여")
+        "ex) 실제 사례 공유를 통해 경각심 부여", unsafe_allow_html=True)
     with col2:
         st.markdown("### 🚨2. 화재 피해 최소화 방법 (화재 발생 시 피해 줄이기)")
         st.success("✅ **초동 대응 강화**")
