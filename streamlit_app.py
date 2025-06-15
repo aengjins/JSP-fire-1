@@ -1,12 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-
-# 한글 폰트 설정 (Windows 기준)
-plt.rcParams['font.family'] = 'Malgun Gothic'  # Windows 사용자
-# plt.rcParams['font.family'] = 'AppleGothic'  # Mac 사용자
-plt.rcParams['axes.unicode_minus'] = False     # 마이너스 부호 깨짐 방지
+import koreanize_matplotlib
 
 #제목
 st.title("🔥 진주시 화재")

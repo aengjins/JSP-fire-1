@@ -2,4 +2,4 @@ streamlit
 pandas
 openpyxl
 matplotlib
-matplotlib.font_manager
+koreanize_matplotlib
