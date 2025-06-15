@@ -7,7 +7,7 @@ import pydeck as pdk
 # 제목
 st.title("🔥 진주시 화재")
 
-tab1, tab2 = st.tabs(['화재 발생 정보', '비상소화장치'])
+tab1, tab2, tab3 = st.tabs(['화재 발생 정보', '비상소화장치', '문제 제시'])
 with tab1:
     st.header("1. 진주시 화재 발생 정보")
 
@@ -35,6 +35,7 @@ with tab1:
     st.plotly_chart(fig)
 
 with tab2:
+    st.header("2. 진주시 비상 소화장치")
 # 소화기 아이콘 정의
     ICON_URL = "https://i.postimg.cc/2jc0dcDK/fire-extinguisher-icon-cursor-32x32.png"
 
@@ -76,3 +77,7 @@ with tab2:
         ],
         tooltip={"text": "{place}"}
     ))
+
+with tab3:
+    st.header("비닐하우스 화재 사고")
+    st.write("https://www.gnnews24.kr/news/articleView.html?idxno=21304")
