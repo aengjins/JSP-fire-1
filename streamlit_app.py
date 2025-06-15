@@ -90,4 +90,4 @@ with tab3:
     st.title("비닐하우스 화재 데이터")
 
     st.write("화재 정보 데이터프레임 (일부 열만 표시됨):")
-    st.dataframe(filtered_df)
+    st.dataframe(df)
