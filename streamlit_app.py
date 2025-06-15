@@ -81,7 +81,7 @@ with tab2:
 with tab3:
     st.header("비닐하우스 화재 사고")
     st.write("https://www.gnnews24.kr/news/articleView.html?idxno=21304")
-    df = pd.read_excel("진주시 화재 발생 정보 (비닐하우스).xlsx")
+    df = pd.read_excel("진주시 화재 발생 정보(비닐하우스).xlsx")
 
     # 필요한 열만 선택
     selected_columns = ['화재발생년원일', '시군구', '발화요인대분류', '장소소분류']
