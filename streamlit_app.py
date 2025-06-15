@@ -97,7 +97,7 @@ with tab4:
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("### 🔥화재 예방 방법(화재 발생 자체를 줄이는 방법)")
-        st.info(st.markdown(
+        st.markdown(
             """
             ✅ **개인의 주의와 습관 개선**<br>
             - 조리 중 자리를 비우지 않기<br>
@@ -107,7 +107,7 @@ with tab4:
             - 정기적인 소방 교육과 훈련<br>
             - 실제 사례 공유를 통해 경각심 부여
             """,
-            unsafe_allow_html=True))
+            unsafe_allow_html=True)
     with col2:
         st.markdown("### 🚨2. 화재 피해 최소화 방법 (화재 발생 시 피해 줄이기)")
         st.success("✅ **초동 대응 강화**")
