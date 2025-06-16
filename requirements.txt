@@ -1,12 +1,10 @@
 streamlit
 pandas
 openpyxl
-plotly.express
+plotly
 pydeck
 streamlit_folium
 folium
-plotly
-Image
+Pillow
 numpy
-matplotlib.pyplot
---upgrade pip
+matplotlib
