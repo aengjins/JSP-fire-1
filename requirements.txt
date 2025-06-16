@@ -9,3 +9,4 @@ plotly
 Image
 numpy
 matplotlib.pyplot
+--upgrade pip
