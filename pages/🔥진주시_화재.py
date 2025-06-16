@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import pydeck as pdk
 
+st.set_page_config(page_title="진주시 화재", page_icon="🔥")
+st.sidebar.header("진주시 화재에 대한 데이터입니다.")
 
 # 제목
 st.title("🔥 진주시 화재")
@@ -60,9 +62,9 @@ with tab2:
     st.pydeck_chart(pdk.Deck(
         map_style="mapbox://styles/mapbox/navigation-day-v1",
         initial_view_state=pdk.ViewState(
-            latitude=35.186973,
-            longitude=128.11661,
-            zoom=11
+            latitude=35.226602,
+            longitude=128.121389,
+            zoom=10
         ),
         layers=[
             pdk.Layer(
