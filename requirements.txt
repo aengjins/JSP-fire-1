@@ -3,3 +3,8 @@ pandas
 openpyxl
 plotly.express
 pydeck
+streamlit_folium
+folium
+plotly
+Image
+numpy

@@ -10,7 +10,8 @@ st.sidebar.markdown("""
                     2. 경상남도청<br>
                     3. 경남뉴스<br>
                     4. 뉴시스<br>
-                    5. 경상남도 소방본부
+                    5. 경상남도 소방본부<br>
+                    6. BBS뉴스
                     """, unsafe_allow_html=True)
 
 # 제목
