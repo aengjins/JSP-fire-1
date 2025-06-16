@@ -20,8 +20,8 @@ st.markdown("""
 """)
 
 # 이미지 불러오기 및 리사이즈
-img1 = Image.open("/workspaces/DS_TP/data/crime_region.png").resize((400, 350))
-img2 = Image.open("/workspaces/DS_TP/data/crime_year.png").resize((500, 430))
+img1 = Image.open("범죄등급지도.png").resize((400, 350))
+img2 = Image.open("범죄지수등급.png").resize((500, 430))
 
 # 열 2개 생성
 col1, col2 = st.columns(2)
