@@ -60,9 +60,9 @@ st.markdown("""
 st.markdown("진주시 행정동별 위험도 및 방범 시설 비교")
 
 # 데이터 로딩
-grade_df = pd.read_excel("/workspaces/DS_TP/data/jinju_crime_grade.xlsx")
-lamp_cctv_df = pd.read_excel("/workspaces/DS_TP/data/jinju_cctv_lamp.xlsx")
-time_df=pd.read_excel("/workspaces/DS_TP/data/crime_time.xlsx")
+grade_df = pd.read_excel("범죄/jinju_crime_grade.xlsx")
+lamp_cctv_df = pd.read_excel("범죄/jinju_cctv_lamp.xlsx")
+time_df=pd.read_excel("범죄/crime_time.xlsx")
 
 # 병합
 merged_df = pd.merge(grade_df, lamp_cctv_df, on="행정동", how="inner")
@@ -130,8 +130,8 @@ show_cctv = st.checkbox("CCTV 위치 보기", value=False)
 show_lamp = st.checkbox("가로등 위치 보기", value=False)
 
 # 지도 데이터 예시 로딩 (위도/경도 포함된 CSV 필요)
-cctv_data = pd.read_excel("/workspaces/DS_TP/data/jinju_cctv.xlsx", engine='openpyxl')
-lamp_data = pd.read_excel("/workspaces/DS_TP/data/jinju_lamp.xlsx", engine='openpyxl')
+cctv_data = pd.read_excel("범죄/jinju_cctv.xlsx", engine='openpyxl')
+lamp_data = pd.read_excel("범죄/jinju_lamp.xlsx", engine='openpyxl')
 
 map_center = [35.1802, 128.1076]  # 진주시 중심 좌표
 m = folium.Map(location=map_center, zoom_start=13)
