@@ -109,8 +109,22 @@ with tab4:
             """,
             unsafe_allow_html=True)
     with col2:
-        st.markdown("### 🚨2. 화재 피해 최소화 방법 (화재 발생 시 피해 줄이기)")
-        st.success("✅ **초동 대응 강화**")
+        st.markdown("### 🚨화재 피해 최소화 방법 (화재 발생 시 피해 줄이기)")
+        st.markdown("""
+            ✅ **초동 대응 강화**<br>
+            - 소화기 비치 및 사용법 교육 (가정, 사무실, 차량 등)<br>
+            - 화재감지기(연기/열감지기) 설치 의무화 및 작동 확인<br>
+            - 스프링쿨러 또는 자동 진화 장치 설치 (건물/공장/고시원 등)<br><br>
+            ✅ **대피 시스템 확보**<br>
+            - 피난 유도등, 비상구 확보<br>
+            - 층별 대피 훈련 실시<br>
+            - 방연 마스크, 비상 손전등 구비<br><br>
+            ✅ **ICT 및 IoT 기술 활용**<br>
+            - 스마트 화재 감지기: 화재 발생 시 즉시 스마트폰 알림<br>
+            - AI 영상 분석: CCTV 영상에서 연기/불꽃 감지<br>
+            - 무선 네트워크 소화 시스템: 대형 건물이나 공장에 적용
+            """,
+            unsafe_allow_html=True)
     
     st.header("💡참고사례")
     st.write("https://news.bbsi.co.kr/news/articleView.html?idxno=4030108")
