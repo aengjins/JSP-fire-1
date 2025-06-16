@@ -4,7 +4,14 @@ import plotly.express as px
 import pydeck as pdk
 
 st.set_page_config(page_title="진주시 화재", page_icon="🔥")
-st.sidebar.header("진주시 화재에 대한 데이터입니다.")
+st.sidebar.markdown("""
+                    참고문헌<br>
+                    1. 소방청<br>
+                    2. 경상남도청<br>
+                    3. 경남뉴스<br>
+                    4. 뉴시스<br>
+                    5. 경상남도 소방본부
+                    """, unsafe_allow_html=True)
 
 # 제목
 st.title("🔥 진주시 화재")
