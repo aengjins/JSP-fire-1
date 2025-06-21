@@ -1,173 +1,252 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import folium
 from streamlit_folium import st_folium
 from PIL import Image
 import numpy as np
+import os
+from folium.plugins import MarkerCluster
+#반드시 홈 밑에 data 폴더랑 fonts 파일이 있어야하고 fonts파일 안에 나눔고딕 파일이 있어야 제 페이지가 제대로 작동합니다.
+#data 파일 안에 있는 거 그대로 복붙하셔도 될겁니다.
+st.set_page_config(layout="wide")
 
-#st.set_page_config(layout="wide")
+@st.cache_data
+def load_excel(path):
+    return pd.read_excel(path, engine="openpyxl")
 
-st.title("📍 진주시 범죄")
+@st.cache_data
+def load_image(path, size=None):
+    img = Image.open(path)
+    return img.resize(size) if size else img
 
-# ─────────────────────────────
-# 1. 주제 선정 이유
-# ─────────────────────────────        
-st.subheader("1️⃣ 주제 선정 배경")
+@st.cache_resource
+def get_font():
+    path = "범죄/data/NanumGothic.ttf"
+    return fm.FontProperties(fname=path) if os.path.exists(path) else None
 
-st.markdown("""
-- **경상남도 내에서 지역별 범죄 지수** & **진주의 연도별 범죄 지수**
-""")
-
-# 이미지 불러오기 및 리사이즈
-img1 = Image.open("범죄등급지도.png").resize((400, 350))
-img2 = Image.open("범죄지수등급.png").resize((500, 430))
-
-# 열 2개 생성
-col1, col2 = st.columns(2)
-
-with col1:
-    st.image(img1, caption="경상남도의 지역별 범죄지수")
-
-with col2:
-    st.image(img2, caption="연도별 진주시 범죄 지수")
-
-# 추가 설명
+fontprop = get_font()
 
 st.markdown("""
-👉 이러한 배경 속에서, 우리는 진주시의 범죄의 특성을 파악하고 시간적, 환경적 요인을 분석하여 대책을 제안하고 싶습니다.
-""")
+<style>
+    .center-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .content-box {
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# ─────────────────────────────
-# 2. 시간적, 환경적 요인과 이론적 배경
-# ─────────────────────────────
-st.subheader("2️⃣ 환경적 요인과 이론적 배경")
+st.header("📍 진주시 범죄", anchor="center")
 
-st.markdown("""
-- 국내 연구에 따르면, 범죄 발생에는 시간적, 환경적 요인이 큰 영향을 미친다는 연구 내용이 있습니다.
-- 대표적인 것이 CPTED 이론입니다.
-- CPTED이론(범죄예방이론)은 사람과 시간, 환경적 요인이 범죄 발생에 큰 영향을 끼친다는 이론입니다.
-- 저희는 그 중에서 시간적 요인과 환경적 요인에 중점을 두고 프로젝트를 진행하겠습니다. 
-       
-[👉 생활안전지도 바로가기](https://www.safemap.go.kr/)       
-[👉 CPTED 개념 보러가기](http://www.cpted.kr/?r=home&c=02/0205/020501)  
-[👉 가로등과 범죄율의 관계 기사](https://www.yna.co.kr/view/AKR20200108078300004)
-""")
+tabs = st.tabs(["1️⃣ 주제 선정", "2️⃣ 이론적 배경", "3️⃣ 위험도 비교", "4️⃣ 지도", "5️⃣ 해결방안"])
 
-# ─────────────────────────────
-# 3. 위험도 및 시설물 통계 비교
-# ─────────────────────────────
-st.markdown("진주시 행정동별 위험도 및 방범 시설 비교")
+with tabs[0]:
+    st.markdown("<h3 class='center-content'>1️⃣ 주제 선정 배경</h3>", unsafe_allow_html=True)
 
-# 데이터 로딩
-grade_df = pd.read_excel("범죄/jinju_crime_grade.xlsx")
-lamp_cctv_df = pd.read_excel("범죄/jinju_cctv_lamp.xlsx")
-time_df=pd.read_excel("범죄/crime_time.xlsx")
+    # 가운데 정렬용 열 구성 (좌우 여백 포함)
+    col_space1, col_img1, col_space2, col_img2, col_space3 = st.columns([0.2, 1, 0.2, 1, 0.2])
 
-# 병합
-merged_df = pd.merge(grade_df, lamp_cctv_df, on="행정동", how="inner")
+    with col_img1:
+        st.image(load_image("범죄/data/crime_region.png", size=(300, 250)), caption="경상남도의 지역별 범죄지수", use_container_width=True)
+    with col_img2:
+        st.image(load_image("범죄/data/crime_year.png", size=(300, 250)), caption="연도별 진주시 범죄 지수", use_container_width=True)
 
-# 그래프
-st.markdown("#### 🔢 위험등급 AND CCTV & 가로등 수")
+    st.markdown("""
+    <div class='center-content' style='margin-top: 20px;'>
+    👉 이러한 배경 속에서, 우리는 진주시의 범죄의 특성을 파악하고 시간적, 환경적 요인을 분석하여 대책을 제안하고 싶습니다.
+    </div>
+    """, unsafe_allow_html=True)
 
-# 값 준비
-labels = merged_df["행정동"]
-x = np.arange(len(labels))  # X축 위치
-width = 0.25  # 막대 너비
+with tabs[1]:
+    st.markdown("""
+    <style>
+    .desc-box {
+        border: 1px solid #ccc;
+        padding: 16px;
+        border-radius: 8px;
+        background-color: #f5f5f5;
+        margin-bottom: 20px;
+    }
+    .link-box {
+        border: 1px solid #ccc;
+        padding: 12px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        text-align: center;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .link-box a {
+        color: #0366d6;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-# 데이터 추출 및 변환
-risk = merged_df["위험등급"]
-cctv = merged_df["CCTV_개수"] / 100
-lamp = merged_df["가로등_개수"] / 100
+    st.markdown("<h3 class='center-content'>2️⃣ 환경적 요인과 이론적 배경</h3>", unsafe_allow_html=True)
+  # ── 1) 설명박스 ──
+    st.markdown("""
+    <div class="desc-box">
+    국내 연구에 따르면, 범죄 발생에는 시간적, 환경적 요인이 큰 영향을 미친다는 연구 내용이 있습니다.<br><br>
+    그 중 대표적인 것이 <b>CPTED 이론(범죄예방이론)</b>으로, 사람과 시간, 환경적 요인이 범죄 발생에 큰 영향을 끼친다는 이론입니다.<br><br>
+    저희는 그 중에서 <b>시간적 요인</b>과 <b>환경적 요인</b>에 중점을 두고 프로젝트를 진행하겠습니다.
+    </div>
+    """, unsafe_allow_html=True)
 
-# 그래프 생성
-fig, ax1 = plt.subplots(figsize=(14, 6))
+    # ── 2) 링크박스 3개 일렬 배치 ──
+    col1, col2, col3 = st.columns(3, gap="medium")
+    with col1:
+        st.markdown("""
+        <div class="link-box">
+          🔗 <a href="https://www.safemap.go.kr/" target="_blank">생활안전지도 바로가기</a>
+        </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div class="link-box">
+          🔗 <a href="http://www.cpted.kr/?r=home&c=02/0205/020501" target="_blank">CPTED 개념 보러가기</a>
+        </div>
+        """, unsafe_allow_html=True)
+    with col3:
+        st.markdown("""
+        <div class="link-box">
+          🔗 <a href="https://www.yna.co.kr/view/AKR20200108078300004" target="_blank">가로등과 범죄율 관계 기사</a>
+        </div>
+        """, unsafe_allow_html=True)
 
-# 📉 왼쪽 Y축: 위험등급
-ax1.set_ylabel("위험등급 (1~10)", color='red')
-ax1.plot(x, risk, color='red', marker='o', label='위험등급')
-ax1.tick_params(axis='y', labelcolor='red')
-ax1.set_ylim(0, 10)                             # 🔴 범위 고정
-ax1.set_yticks(np.arange(0, 11, 2))             # 🔴 0, 2, 4, ..., 10
+with tabs[2]:
+    st.markdown("<h3 class='center-content'>3️⃣ 위험도 및 방범시설 비교</h3>", unsafe_allow_html=True)
+    grade_df = load_excel("범죄/data/jinju_crime_grade.xlsx")
+    lamp_cctv_df = load_excel("범죄/data/jinju_cctv_lamp.xlsx")
+    time_df = load_excel("범죄/data/crime_time.xlsx")
+    
+    merged_df = pd.merge(grade_df, lamp_cctv_df, on="행정동", how="inner")
+    selected = ["충무공동", "천전동", "평거동", "하대동", "초장동", "가호동", "상대동"]
+    df = merged_df[merged_df["행정동"].isin(selected)].copy().sort_values(by="위험등급", ascending=False)
+    
+    x = np.arange(len(df))
+    width = 0.25
+    fig1, ax1 = plt.subplots(figsize=(5.5, 3))
+    ax1.plot(x, df["위험등급"], color='red', marker='o')
+    ax1.set_ylabel("위험등급 (1~10)", color='red', fontproperties=fontprop)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(df["행정동"], rotation=45, fontproperties=fontprop)
+    ax1.set_ylim(0, 10)
+    ax1.tick_params(axis='y', labelcolor='red')
 
-# 📊 오른쪽 Y축: CCTV, 가로등
-ax2 = ax1.twinx()
-ax2.set_ylabel("시설물 수 (x100)", color='blue')
-bars_cctv = ax2.bar(x - width/2, cctv, width, label='CCTV (x100)', color='blue')
-bars_lamp = ax2.bar(x + width/2, lamp, width, label='가로등 (x100)', color='orange')
-ax2.tick_params(axis='y', labelcolor='blue')
-ax2.set_ylim(0, max(max(cctv), max(lamp)) * 1.2)
+    ax2 = ax1.twinx()
+    ax2.bar(x - width/2, df["CCTV_개수"] / 100, width, color='blue', label='CCTV')
+    ax2.bar(x + width/2, df["가로등_개수"] / 100, width, color='orange', label='가로등')
+    ax2.set_ylabel("시설 수 (x100)", color='blue', fontproperties=fontprop)
+    ax2.tick_params(axis='y', labelcolor='blue')
 
-# X축 라벨
-ax1.set_xticks(x)
-ax1.set_xticklabels(labels, rotation=45)
+    crime_by_time = time_df.drop(columns=["범죄대분류"]).sum().sort_values(ascending=False)
+    fig2, ax = plt.subplots(figsize=(5.5, 3))
+    ax.bar(crime_by_time.index, crime_by_time.values, color='skyblue')
+    ax.set_title("시간대별 범죄 발생 건수", fontproperties=fontprop)
+    ax.set_xlabel("시각대", fontproperties=fontprop)
+    ax.set_ylabel("건수", fontproperties=fontprop)
+    ax.set_xticks(np.arange(len(crime_by_time)))
+    ax.set_xticklabels(crime_by_time.index, rotation=45, fontproperties=fontprop)
 
-# 제목 및 범례
-plt.title("행정동별 위험등급 (선) vs CCTV 및 가로등 설치 수 (막대, x100)")
-fig.legend(loc="upper right", bbox_to_anchor=(1, 1), bbox_transform=ax1.transAxes)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.pyplot(fig1)
+    with col2:
+        st.pyplot(fig2)
+        
+with tabs[3]:
+    st.markdown("<h3 class='center-content'>4️⃣ 진주시 행정구역별 방범시설 지도</h3>", unsafe_allow_html=True)
 
-plt.tight_layout()
-st.pyplot(fig)
+    # ▶ iframe 자동 중앙 정렬을 위한 CSS (필요에 따라 유지)
+    st.markdown("""
+    <style>
+        iframe {display: block !important; margin: auto !important;}
+    </style>
+    """, unsafe_allow_html=True)
 
-st.markdown("**시간대별 범죄 발생 건수**")
+    # 1) 체크박스 중앙 정렬: 두 개 나란히
+    col_l, col_c, col_r = st.columns([1, 2, 1])
+    with col_c:
+        cb1, cb2 = st.columns(2)
+        with cb1:
+            show_cctv = st.checkbox("🔴 CCTV 위치 보기")
+        with cb2:
+            show_lamp = st.checkbox("🔵 가로등 위치 보기")
 
-#여기에는 시간대별 범죄 발생 건수를 나타내는 그래프
+    # 2) Folium 맵 초기화 및 마커 추가
+    if "jinju_map" not in st.session_state:
+        st.session_state.jinju_map = folium.Map(
+            location=[35.1802, 128.1076],
+            zoom_start=13,
+            tiles="CartoDB positron"
+        )
+    m = st.session_state.jinju_map
 
-st.markdown("진주시는 범죄율이 높은데 비해 가로등과 CCTV가 적은 곳이 존재함")
+    if show_cctv:
+        cctv_df = load_excel("범죄/data/jinju_cctv.xlsx")
+        cluster = MarkerCluster().add_to(m)
+        for _, r in cctv_df.iterrows():
+            folium.Marker(
+                location=[r['위도'], r['경도']],
+                tooltip="📷 CCTV",
+                icon=folium.Icon(color="red", icon="camera", prefix="fa")
+            ).add_to(cluster)
+    if show_lamp:
+        lamp_df = load_excel("범죄/data/jinju_lamp.xlsx")
+        cluster = MarkerCluster().add_to(m)
+        for _, r in lamp_df.iterrows():
+            folium.Marker(
+                location=[r['위도'], r['경도']],
+                tooltip="💡 가로등",
+                icon=folium.Icon(color="blue", icon="lightbulb-o", prefix="fa")
+            ).add_to(cluster)
 
-# ─────────────────────────────
-# 4. 행정구역 + 시설 위치 지도
-# ─────────────────────────────
-st.subheader("4️⃣ 진주시 시설물 지도")
+    # 3) 지도를 화면 중앙에 렌더링
+    col_left, col_center, col_right = st.columns([1, 2, 1])
+    with col_center:
+        st_folium(m, width=900, height=650)
 
-st.markdown("""
-- 아래 지도는 **행정동 경계와 함께 CCTV 및 가로등 위치**를 표시합니다.
-- 원하는 필터를 선택해서 볼 수 있습니다.
-""")
 
-# 지도 필터
-show_cctv = st.checkbox("CCTV 위치 보기", value=False)
-show_lamp = st.checkbox("가로등 위치 보기", value=False)
 
-# 지도 데이터 예시 로딩 (위도/경도 포함된 CSV 필요)
-cctv_data = pd.read_excel("범죄/jinju_cctv.xlsx", engine='openpyxl')
-lamp_data = pd.read_excel("범죄/jinju_lamp.xlsx", engine='openpyxl')
+with tabs[4]:
+    st.markdown("<h3 class='center-content'>5️⃣ 해결 방안 제시</h3>", unsafe_allow_html=True)
+    st.markdown("<div class='center-content'><br>문제 해결은 개인적, 사회적 측면에서의 접근이 필요합니다.<br></div>", unsafe_allow_html=True)
 
-map_center = [35.1802, 128.1076]  # 진주시 중심 좌표
-m = folium.Map(location=map_center, zoom_start=13)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("""
+        <div class="content-box">
+        <h4>👤 개인적 측면</h4>
+        <ul>
+            <li>📌 <b>귀갓길 조심</b><br>밝은 길 이용, CCTV 있는 길 이용</li>
+            <li>🕐 <b>귀가 시간 조절</b><br>너무 늦게 다니지 않기</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
-if show_cctv:
-    for _, row in cctv_data.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=3,
-            color='blue',
-            fill=True,
-            fill_opacity=0.7,
-            tooltip="CCTV"
-        ).add_to(m)
-
-if show_lamp:
-    for _, row in lamp_data.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=2,
-            color='orange',
-            fill=True,
-            fill_opacity=0.6,
-            tooltip="가로등"
-        ).add_to(m)
-
-st_data = st_folium(m, width=1000, height=600)
-
-# ─────────────────────────────
-# 5. 해결방안 제시
-# ─────────────────────────────
-st.subheader("5️⃣ 해결 방안 제시")
-
-st.markdown("""
-- 📌 **부족한 지역에 CCTV 추가 설치**
-- 💡 **가로등 설치 및 노후화된 시설 개선**
-- ⏰ **가로등 운영시간 연장 (심야 시간 포함)**
-- ☎️ **안심귀가 콜 서비스 활성화** 
-""")
+    with col2:
+        st.markdown("""
+        <div class="content-box" style="background-color: #f0f8ff;">
+        <h4>🏙️ 사회적 측면</h4>
+        <ul>
+            <li>📷 <b>CCTV 추가 설치</b><br>사각지대 중심으로 확대</li>
+            <li>💡 <b>가로등 설치 및 보수</b><br>노후 시설 교체, 신규 설치</li>
+            <li>🕐 <b>가로등 점등 시간 연장</b><br>새벽까지 조도 유지</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
