@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import pydeck as pdk
 
-
+pdk.settings.mapbox_api_key = st.secrets["mapbox"]["token"]
 
 st.set_page_config(page_title="진주시 화재", page_icon="🔥")
 st.sidebar.markdown("""
@@ -69,13 +69,13 @@ with tab2:
     }
 
 # pydeck 표시
-        st.pydeck_chart(pdk.Deck(
-            map_style="light",  # Mapbox 토큰 없이 작동
-            initial_view_state=pdk.ViewState(
-            latitude=35.18,
-            longitude=128.1,
-            zoom=12  # 확대
-            ),
+    st.pydeck_chart(pdk.Deck(
+        map_style="mapbox://styles/mapbox/light-v10",
+        initial_view_state=pdk.ViewState(
+            latitude=35.226602,
+            longitude=128.121389,
+            zoom=10
+        ),
         layers=[
             pdk.Layer(
                 type="IconLayer",
