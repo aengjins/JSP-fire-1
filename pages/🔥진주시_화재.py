@@ -69,14 +69,13 @@ with tab2:
     }
 
 # pydeck 표시
-    st.pydeck_chart(pdk.Deck(
-        map_style="mapbox://styles/mapbox/light-v10",
-        mapbox_key=st.secrets["mapbox"]["token"],
-        initial_view_state=pdk.ViewState(
-            latitude=35.226602,
-            longitude=128.121389,
-            zoom=10
-        ),
+        st.pydeck_chart(pdk.Deck(
+            map_style="light",  # Mapbox 토큰 없이 작동
+            initial_view_state=pdk.ViewState(
+            latitude=35.18,
+            longitude=128.1,
+            zoom=12  # 확대
+            ),
         layers=[
             pdk.Layer(
                 type="IconLayer",
