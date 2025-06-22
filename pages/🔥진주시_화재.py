@@ -68,12 +68,13 @@ with tab2:
             "anchorY": 32
     }
 
-st.pydeck_chart(pdk.Deck(
-    map_style="light",  # CORS 우회용 기본값
-    initial_view_state=pdk.ViewState(
-        latitude=35.226602,
-        longitude=128.121389,
-        zoom=10
+# pydeck 지도 표시 (기본 스타일)
+    st.pydeck_chart(pdk.Deck(
+        map_style=None,  # Mapbox 스타일 대신 기본 스타일 사용
+        initial_view_state=pdk.ViewState(
+            latitude=35.226602,
+            longitude=128.121389,
+            zoom=10
     ),
     layers=[
         pdk.Layer(
