@@ -70,7 +70,8 @@ with tab2:
 
 # pydeck 표시
     st.pydeck_chart(pdk.Deck(
-        map_style="mapbox://styles/mapbox/navigation-day-v1",
+        map_style="mapbox://styles/mapbox/light-v10",
+        mapbox_key=st.secrets["mapbox"]["token"],
         initial_view_state=pdk.ViewState(
             latitude=35.226602,
             longitude=128.121389,
