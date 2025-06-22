@@ -68,27 +68,27 @@ with tab2:
             "anchorY": 32
     }
 
-# pydeck 표시
-    st.pydeck_chart(pdk.Deck(
-        map_style="https://api.mapbox.com/styles/v1/mapbox/light-v10?access_token=" + st.secrets["mapbox"]["token"],
-        initial_view_state=pdk.ViewState(
-            latitude=35.226602,
-            longitude=128.121389,
-            zoom=10
-        ),
-        layers=[
-            pdk.Layer(
-                type="IconLayer",
-                data=data,
-                get_icon="icon_data",
-                get_position='[lon, lat]',
-                get_size=4,
-                size_scale=15,
-                pickable=True
-            )
-        ],
-        tooltip={"text": "{place}"}
-    ))
+st.pydeck_chart(pdk.Deck(
+    map_style="light",  # CORS 우회용 기본값
+    initial_view_state=pdk.ViewState(
+        latitude=35.226602,
+        longitude=128.121389,
+        zoom=10
+    ),
+    layers=[
+        pdk.Layer(
+            type="IconLayer",
+            data=data,
+            get_icon="icon_data",
+            get_position='[lon, lat]',
+            get_size=4,
+            size_scale=15,
+            pickable=True
+        )
+    ],
+    tooltip={"text": "{place}"}
+))
+
 
 with tab3:
     st.header("비닐하우스 화재 사고")
