@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import pydeck as pdk
 
+pdk.settings.mapbox_api_key = st.secrets["mapbox"]["token"]
+
 st.set_page_config(page_title="진주시 화재", page_icon="🔥")
 st.sidebar.markdown("""
                     참고문헌<br>
